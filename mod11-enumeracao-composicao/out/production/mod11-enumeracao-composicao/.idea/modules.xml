@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/enumeracao/enumeracao.iml" filepath="$PROJECT_DIR$/enumeracao/enumeracao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/mod11-enumeracao-composicao.iml" filepath="$PROJECT_DIR$/.idea/mod11-enumeracao-composicao.iml" />
+    </modules>
+  </component>
+</project>
