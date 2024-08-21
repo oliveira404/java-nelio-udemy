@@ -1,11 +1,8 @@
-package primeiro_contato_com_comparator;
+package _01primeiro_contato_com_comparator;
 
-import primeiro_contato_com_comparator.entities.MyComparator;
-import primeiro_contato_com_comparator.entities.Product;
+import _01primeiro_contato_com_comparator.entities.Product;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class App {
@@ -41,8 +38,6 @@ public class App {
         // Usando a expressao lambda mais ainda super blast
         list.sort((p1, p2) -> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase()));
 
-        for (Product p : list) {
-            System.out.println(p);
-        }
+        list.forEach(System.out::println);
     }
 }

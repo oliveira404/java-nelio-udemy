@@ -1,4 +1,4 @@
-package primeiro_contato_com_comparator.entities;
+package _01primeiro_contato_com_comparator.entities;
 
 public class Product /*implements Comparable<Product>*/{
 
