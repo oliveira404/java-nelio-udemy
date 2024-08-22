@@ -3,6 +3,7 @@ package _01primeiro_contato_com_comparator;
 import _01primeiro_contato_com_comparator.entities.Product;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class App {
@@ -36,7 +37,8 @@ public class App {
         //Comparator<Product> comparator = (p1, p2) -> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase());
 
         // Usando a expressao lambda mais ainda super blast
-        list.sort((p1, p2) -> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase()));
+        //list.sort((p1, p2) -> p1.getName().toUpperCase().compareTo(p2.getName().toUpperCase()));
+        list.sort(Comparator.comparing(p -> p.getName().toUpperCase()));
 
         list.forEach(System.out::println);
     }
