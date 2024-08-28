@@ -1,6 +1,7 @@
 package org.semnome;
 
 import org.semnome.db.DB;
+import org.semnome.db.DbIntegrityException;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -15,16 +16,14 @@ public class Main {
         try {
             // para todos do departamento de codigo 2 vai setar um aumento de 100 reais a mais.
             conn = DB.getConnection();
-            st = conn.prepareStatement("UPDATE seller " +
-                    "SET BaseSalary = BaseSalary + ? WHERE (DepartmentId = ?)");
-            st.setDouble(1, 100.0);
-            st.setInt(2, 5);
+            st = conn.prepareStatement("DELETE FROM department WHERE id = ?");
+            st.setInt(1, 2); //o primeiro é o ? o segundo é a linha da coluna.
 
             int rowsAffected = st.executeUpdate();
 
             System.out.println("Done! Rows Affected: " + rowsAffected);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DbIntegrityException(e.getMessage());
         } finally {
             DB.closeStatement(st);
             DB.closeConnection();
