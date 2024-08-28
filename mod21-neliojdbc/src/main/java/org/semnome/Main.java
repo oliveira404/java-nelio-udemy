@@ -2,38 +2,49 @@ package org.semnome;
 
 import org.semnome.db.DB;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class Main {
     public static void main(String[] args) {
 
-        //Connection connection = DB.getConnection();
-        //DB.closeConnection();
-
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Connection conn = null;
-        Statement st = null;
-        ResultSet rs = null;
+        PreparedStatement st = null;
 
         try {
             conn = DB.getConnection();
-            st = conn.createStatement();
-            rs = st.executeQuery("SELECT * FROM department");
+            st = conn.prepareStatement("INSERT INTO seller " +
+                    "(Name, Email, BirthDate, BaseSalary, DepartmentId) " +
+                    "VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
-            // enquanto existir uma proxima linha
-            while (rs.next()) {
-                System.out.println(rs.getInt("id") + ", " + rs.getString("name"));
+            st.setString(1, "Drácula");
+            st.setString(2, "dracula@gmail.com");
+            st.setDate(3, new java.sql.Date(sdf.parse("10/07/1999").getTime()));
+            st.setDouble(4, 3000.0);
+            st.setInt(5, 4);
+
+            int rowsAffected = st.executeUpdate();
+
+            if (rowsAffected > 0) {
+                ResultSet rs = st.getGeneratedKeys();
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    System.out.println("Done! id = " + id);
+                }
+
+            } else {
+                System.out.println("No rows affected!");
             }
-        } catch (SQLException e) {
+
+        } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
         finally {
-            // fizemos assim para nao ficarmos criando vários try catch aqui.
-            // estamos fechando pois a jvm não conrola essas conexões, então para evitar consuma fechamos elas
-            DB.closeResultSet(rs);
             DB.closeStatement(st);
+
+            // Sempre feiche a conexão por último.
             DB.closeConnection();
         }
     }
