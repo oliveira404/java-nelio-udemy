@@ -9,42 +9,24 @@ import java.text.SimpleDateFormat;
 public class Main {
     public static void main(String[] args) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Connection conn = null;
         PreparedStatement st = null;
 
         try {
+            // para todos do departamento de codigo 2 vai setar um aumento de 100 reais a mais.
             conn = DB.getConnection();
-            st = conn.prepareStatement("INSERT INTO seller " +
-                    "(Name, Email, BirthDate, BaseSalary, DepartmentId) " +
-                    "VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-
-            st.setString(1, "Drácula");
-            st.setString(2, "dracula@gmail.com");
-            st.setDate(3, new java.sql.Date(sdf.parse("10/07/1999").getTime()));
-            st.setDouble(4, 3000.0);
-            st.setInt(5, 4);
+            st = conn.prepareStatement("UPDATE seller " +
+                    "SET BaseSalary = BaseSalary + ? WHERE (DepartmentId = ?)");
+            st.setDouble(1, 100.0);
+            st.setInt(2, 5);
 
             int rowsAffected = st.executeUpdate();
 
-            if (rowsAffected > 0) {
-                ResultSet rs = st.getGeneratedKeys();
-                while (rs.next()) {
-                    int id = rs.getInt(1);
-                    System.out.println("Done! id = " + id);
-                }
-
-            } else {
-                System.out.println("No rows affected!");
-            }
-
-        } catch (SQLException | ParseException e) {
+            System.out.println("Done! Rows Affected: " + rowsAffected);
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             DB.closeStatement(st);
-
-            // Sempre feiche a conexão por último.
             DB.closeConnection();
         }
     }
