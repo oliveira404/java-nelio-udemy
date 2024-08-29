@@ -24,6 +24,115 @@ public class SellerDaoJDBC implements SellerDao {
     }
 
     @Override
+    public Seller findById(Integer id) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = this.conn.prepareStatement("" +
+                    "SELECT seller .*,department.Name as DepName " +
+                    "FROM seller INNER JOIN department " +
+                    "ON seller.DepartmentId = department.Id " +
+                    "WHERE seller.Id = ?");
+
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            // se o codigo acima nao retornar nada ele vai pular o if e vai retornar false
+            if (rs.next()) {
+                Department department = instanciateDepartment(rs);
+                Seller seller = instanciateSeller(rs, department);
+                return seller;
+            }
+            return null; //nao existia nenhum vendedor com esse id
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+            //DB.closeConnection(); Nao precisa fechar pq vamos usar outros metodos com
+            // o mesmo DAO, isso se fecha no programa principal
+        }
+
+    }
+
+    @Override
+    public List<Seller> findByDepartment(Department department) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = this.conn.prepareStatement("" +
+                    "SELECT seller.*,department.Name as DepName " +
+                    "FROM seller " +
+                    "INNER JOIN department " +
+                    "ON seller.DepartmentId = department.Id " +
+                    "WHERE DepartmentId = ? ORDER BY Name"
+            );
+
+            st.setInt(1, department.getId());
+            rs = st.executeQuery();
+
+            List<Seller> sellerList = new ArrayList<>();
+            Map<Integer, Department> map = new HashMap<>();
+
+            //map para nao ficarmos repetindo a criação de novos departmentos para cada seller,
+            //queremos que um seller esteja no mesmo departmento
+
+            while (rs.next()) {
+                Department dep = map.get(rs.getInt("DepartmentId"));
+
+                if (dep == null) {
+                    dep = instanciateDepartment(rs);
+                    map.put(rs.getInt("DepartmentId"), dep);
+                }
+                Seller seller = instanciateSeller(rs, dep);
+                sellerList.add(seller);
+            }
+            return sellerList;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
+    }
+
+    @Override
+    public List<Seller> findAll() {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = this.conn.prepareStatement("" +
+                    "SELECT seller.*,department.Name as DepName " +
+                    "FROM seller " +
+                    "INNER JOIN department " +
+                    "ON seller.DepartmentId = department.Id " +
+                    "ORDER BY Name"
+            );
+
+            rs = st.executeQuery();
+
+            List<Seller> sellerList = new ArrayList<>();
+            Map<Integer, Department> map = new HashMap<>();
+
+            while (rs.next()) {
+                Department dep = map.get(rs.getInt("DepartmentId"));
+
+                if (dep == null) {
+                    dep = instanciateDepartment(rs);
+                    map.put(rs.getInt("DepartmentId"), dep);
+                }
+                Seller seller = instanciateSeller(rs, dep);
+                sellerList.add(seller);
+            }
+            return sellerList;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
+    }
+
+    @Override
     public void insert(Seller obj) {
         PreparedStatement ps = null;
         try {
@@ -107,37 +216,6 @@ public class SellerDaoJDBC implements SellerDao {
         }
     }
 
-    @Override
-    public Seller findById(Integer id) {
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        try {
-            st = this.conn.prepareStatement("" +
-                    "SELECT seller .*,department.Name as DepName " +
-                    "FROM seller INNER JOIN department " +
-                    "ON seller.DepartmentId = department.Id " +
-                    "WHERE seller.Id = ?");
-
-            st.setInt(1, id);
-            rs = st.executeQuery();
-            // se o codigo acima nao retornar nada ele vai pular o if e vai retornar false
-            if (rs.next()) {
-                Department department = instanciateDepartment(rs);
-                Seller seller = instanciateSeller(rs, department);
-                return seller;
-            }
-            return null; //nao existia nenhum vendedor com esse id
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
-        } finally {
-            DB.closeStatement(st);
-            DB.closeResultSet(rs);
-            //DB.closeConnection(); Nao precisa fechar pq vamos usar outros metodos com
-            // o mesmo DAO, isso se fecha no programa principal
-        }
-
-    }
-
     private Seller instanciateSeller(ResultSet rs, Department department) throws SQLException {
        Seller seller = new Seller();
        seller.setId(rs.getInt("Id"));
@@ -154,83 +232,5 @@ public class SellerDaoJDBC implements SellerDao {
         department.setId(rs.getInt("DepartmentId"));
         department.setName(rs.getString("DepName"));
         return department;
-    }
-
-    @Override
-    public List<Seller> findAll() {
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        try {
-            st = this.conn.prepareStatement("" +
-                    "SELECT seller.*,department.Name as DepName " +
-                    "FROM seller " +
-                    "INNER JOIN department " +
-                    "ON seller.DepartmentId = department.Id " +
-                    "ORDER BY Name"
-            );
-
-            rs = st.executeQuery();
-
-            List<Seller> sellerList = new ArrayList<>();
-            Map<Integer, Department> map = new HashMap<>();
-
-            while (rs.next()) {
-                Department dep = map.get(rs.getInt("DepartmentId"));
-
-                if (dep == null) {
-                    dep = instanciateDepartment(rs);
-                    map.put(rs.getInt("DepartmentId"), dep);
-                }
-                Seller seller = instanciateSeller(rs, dep);
-                sellerList.add(seller);
-            }
-            return sellerList;
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
-        } finally {
-            DB.closeStatement(st);
-            DB.closeResultSet(rs);
-        }
-    }
-
-    @Override
-    public List<Seller> findByDepartment(Department department) {
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        try {
-            st = this.conn.prepareStatement("" +
-                    "SELECT seller.*,department.Name as DepName " +
-                    "FROM seller " +
-                    "INNER JOIN department " +
-                    "ON seller.DepartmentId = department.Id " +
-                    "WHERE DepartmentId = ? ORDER BY Name"
-            );
-
-            st.setInt(1, department.getId());
-            rs = st.executeQuery();
-
-            List<Seller> sellerList = new ArrayList<>();
-            Map<Integer, Department> map = new HashMap<>();
-
-            //map para nao ficarmos repetindo a criação de novos departmentos para cada seller,
-            //queremos que um seller esteja no mesmo departmento
-
-            while (rs.next()) {
-                Department dep = map.get(rs.getInt("DepartmentId"));
-
-                if (dep == null) {
-                    dep = instanciateDepartment(rs);
-                    map.put(rs.getInt("DepartmentId"), dep);
-                }
-                Seller seller = instanciateSeller(rs, dep);
-                sellerList.add(seller);
-            }
-            return sellerList;
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
-        } finally {
-            DB.closeStatement(st);
-            DB.closeResultSet(rs);
-        }
     }
 }
