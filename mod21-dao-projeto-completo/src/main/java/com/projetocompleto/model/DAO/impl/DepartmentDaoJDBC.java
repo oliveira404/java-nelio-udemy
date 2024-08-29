@@ -4,8 +4,11 @@ import com.projetocompleto.DB.DB;
 import com.projetocompleto.DB.DbException;
 import com.projetocompleto.model.DAO.DepartmentDao;
 import com.projetocompleto.model.entities.Department;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,6 +114,16 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public void deleteById(Integer id) {
-
+        PreparedStatement ps = null;
+        try {
+            ps = this.connection.prepareStatement("DELETE FROM department WHERE id = ?");
+            ps.setInt(1, id);
+            if (findById(id) == null) throw new DbException("Não existe um departamento com id: " + id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(String.format("Este departamento de id: %d está em uso!", id));
+        } finally {
+            DB.closeStatement(ps);
+        }
     }
 }
