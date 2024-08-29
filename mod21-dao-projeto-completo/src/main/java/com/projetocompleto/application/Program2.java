@@ -4,8 +4,6 @@ import com.projetocompleto.model.DAO.DaoFactory;
 import com.projetocompleto.model.DAO.DepartmentDao;
 import com.projetocompleto.model.entities.Department;
 
-import java.util.List;
-
 public class Program2 {
     public static void main(String[] args) {
 

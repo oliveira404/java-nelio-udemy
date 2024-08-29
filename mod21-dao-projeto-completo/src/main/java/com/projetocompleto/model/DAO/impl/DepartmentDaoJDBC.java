@@ -26,7 +26,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
         ResultSet rs = null;
 
         try {
-            ps = this.connection.prepareStatement("SELECT * FROM department WHERE department.id = ?");
+            ps = this.connection.prepareStatement("SELECT * FROM department WHERE Id = ?");
             ps.setInt(1, id);
             rs = ps.executeQuery();
 
@@ -101,7 +101,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
     public void update(Department obj) {
         PreparedStatement ps = null;
         try {
-            ps = this.connection.prepareStatement("UPDATE department SET name = ? WHERE department.id = ?", Statement.RETURN_GENERATED_KEYS);
+            ps = this.connection.prepareStatement("UPDATE department SET name = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, obj.getName());
             ps.setInt(2, obj.getId());
             ps.executeUpdate();
