@@ -50,16 +50,8 @@ public class SellerDaoJDBC implements SellerDao {
             rs = st.executeQuery();
             // se o codigo acima nao retornar nada ele vai pular o if e vai retornar false
             if (rs.next()) {
-                Department dep = new Department();
-                dep.setId(rs.getInt("DepartmentId"));
-                dep.setName(rs.getString("DepName"));
-                Seller seller = new Seller();
-                seller.setId(rs.getInt("Id"));
-                seller.setName(rs.getString("Name"));
-                seller.setEmail(rs.getString("Email"));
-                seller.setBaseSalary(rs.getDouble("BaseSalary"));
-                seller.setBirthDate(rs.getDate("BirthDate"));
-                seller.setDepartment(dep);
+                Department department = instanciateDepartment(rs);
+                Seller seller = instanciateSeller(rs, department);
                 return seller;
             }
             return null; //nao existia nenhum vendedor com esse id
@@ -72,6 +64,24 @@ public class SellerDaoJDBC implements SellerDao {
             // o mesmo DAO, isso se fecha no programa principal
         }
 
+    }
+
+    private Seller instanciateSeller(ResultSet rs, Department department) throws SQLException {
+       Seller seller = new Seller();
+       seller.setId(rs.getInt("Id"));
+       seller.setName(rs.getString("Name"));
+       seller.setEmail(rs.getString("Email"));
+       seller.setBaseSalary(rs.getDouble("BaseSalary"));
+       seller.setBirthDate(rs.getDate("BirthDate"));
+       seller.setDepartment(department);
+       return seller;
+    }
+
+    private Department instanciateDepartment(ResultSet rs) throws SQLException {
+        Department department = new Department();
+        department.setId(rs.getInt("DepartmentId"));
+        department.setName(rs.getString("DepName"));
+        return department;
     }
 
 
