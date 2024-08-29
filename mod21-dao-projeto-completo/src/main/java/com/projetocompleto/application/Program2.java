@@ -18,5 +18,10 @@ public class Program2 {
         System.out.println("\n=== TEST 2: departament findByAll ===");
         List<Department> departmentList = departmentDao.findAll();
         departmentList.forEach(System.out::println);
+
+        System.out.println("\n=== TEST 3: departament insert ===");
+        department = new Department(null, "Construcao");
+        departmentDao.insert(department);
+        System.out.println("Inserted! New id " + department.getId());
     }
 }

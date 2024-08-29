@@ -4,10 +4,8 @@ import com.projetocompleto.DB.DB;
 import com.projetocompleto.DB.DbException;
 import com.projetocompleto.model.DAO.DepartmentDao;
 import com.projetocompleto.model.entities.Department;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +70,28 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public void insert(Department obj) {
+        PreparedStatement ps = null;
+        try {
+            ps = this.connection.prepareStatement("" +
+                    "INSERT INTO department (name) VALUES (?)",
+                    Statement.RETURN_GENERATED_KEYS);
 
+            ps.setString(1, obj.getName());
+
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) obj.setId(rs.getInt(1));
+                DB.closeResultSet(rs);
+            } else {
+                throw new DbException("Unexpected error! No rows Affected!");
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(ps);
+        }
     }
 
     @Override
