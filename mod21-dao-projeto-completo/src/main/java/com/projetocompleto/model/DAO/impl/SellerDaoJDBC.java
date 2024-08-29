@@ -5,8 +5,11 @@ import com.projetocompleto.DB.DbException;
 import com.projetocompleto.model.DAO.SellerDao;
 import com.projetocompleto.model.entities.Department;
 import com.projetocompleto.model.entities.Seller;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +62,32 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void update(Seller obj) {
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("" +
+                            "UPDATE seller " +
+                            "SET " +
+                            "Name = ?, " +
+                            "Email = ?, " +
+                            "BirthDate = ?, " +
+                            "BaseSalary = ?, " +
+                            "DepartmentId = ? " +
+                            "WHERE Id = ?",
+                    Statement.RETURN_GENERATED_KEYS);
 
+            ps.setString(1, obj.getName());
+            ps.setString(2, obj.getEmail());
+            ps.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+            ps.setDouble(4, obj.getBaseSalary());
+            ps.setInt(5, obj.getDepartment().getId());
+            ps.setInt(6, obj.getId());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(ps);
+        }
     }
 
     @Override
