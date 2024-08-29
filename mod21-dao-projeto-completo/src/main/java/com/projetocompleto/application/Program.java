@@ -18,7 +18,7 @@ public class Program {
         Seller seller = sellerDao.findById(3);
         System.out.println(seller);
 
-        System.out.println("\n=== TEST 2: seller findByDepartment ===");
+        /*System.out.println("\n=== TEST 2: seller findByDepartment ===");
         Department department = new Department(2, null);
         List<Seller> list = sellerDao.findByDepartment(department);
         list.forEach(System.out::println);
@@ -37,6 +37,9 @@ public class Program {
         seller.setName("Lá vem o marcos");
         seller.setBaseSalary(10000.0);
         sellerDao.update(seller);
-        System.out.println("Updated completed!");
+        System.out.println("Updated completed!");*/
+
+        System.out.println("\n=== TEST 5: seller delete ===");
+        sellerDao.deleteById(24);
     }
 }
