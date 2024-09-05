@@ -1,8 +1,19 @@
 package com.meusestudos.course.entities;
 
-import jakarta.persistence.*;
-import lombok.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +45,7 @@ public class User implements Serializable {
     @NonNull
     private String password;
 
+    @JsonIgnore
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
