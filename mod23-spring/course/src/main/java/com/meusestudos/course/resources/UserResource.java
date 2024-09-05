@@ -1,18 +1,26 @@
 package com.meusestudos.course.resources;
 
 import com.meusestudos.course.entities.User;
+import com.meusestudos.course.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 public class UserResource {
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping
-    public ResponseEntity<User> findAll() {
-        User user = new User(1L, "maria", "asas@gmail.com", "40028922", "1234");
-        return ResponseEntity.ok(user);
+    public ResponseEntity<List<User>> findAll() {
+        return ResponseEntity.ok(userService.findAll());
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> findById(@PathVariable long userId) {
+        return ResponseEntity.ok(userService.findById(userId));
     }
 }
