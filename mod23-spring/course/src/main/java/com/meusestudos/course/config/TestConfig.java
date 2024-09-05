@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
 import java.util.Arrays;
 
 @Configuration
@@ -18,8 +17,9 @@ public class TestConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        User user1 = new User(null, "maria", "asas@gmail.com", "40028922", "1234");
-        User user2 = new User(null, "carlos", "carlos@gmail.com", "40028922", "1234");
+        // tudo que tiver dentro deste méttodo será executado quando a aplicação for iniciada.
+        User user1 = new User("maria", "asas@gmail.com", "40028922", "1234");
+        User user2 = new User("carlos", "carlos@gmail.com", "40028922", "1234");
 
         userRepository.saveAll(Arrays.asList(user1, user2));
     }

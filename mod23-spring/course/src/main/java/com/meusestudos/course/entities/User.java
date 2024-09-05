@@ -1,18 +1,14 @@
 package com.meusestudos.course.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
@@ -22,11 +18,23 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @EqualsAndHashCode.Exclude
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NonNull
     private String name;
+
+    @NonNull
     private String email;
+
+    @NonNull
     private String phone;
+
+    @NonNull
     private String password;
+
+    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "client")
+    private List<Order> orders = new ArrayList<>();
 }
