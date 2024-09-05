@@ -1,8 +1,10 @@
 package com.meusestudos.course.config;
 
+import com.meusestudos.course.entities.Category;
 import com.meusestudos.course.entities.Order;
 import com.meusestudos.course.entities.User;
 import com.meusestudos.course.entities.enums.OrderStatus;
+import com.meusestudos.course.repositories.CategoryRepository;
 import com.meusestudos.course.repositories.OrderRepository;
 import com.meusestudos.course.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +24,18 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Override
     public void run(String... args) throws Exception {
         // tudo que tiver dentro deste méttodo será executado quando a aplicação for iniciada.
+
+        Category cat1 = new Category(null, "Electronics");
+        Category cat2 = new Category(null, "Books");
+        Category cat3 = new Category(null, "Computers");
+        categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
+
         User user1 = new User("maria", "asas@gmail.com", "40028922", "1234");
         User user2 = new User("carlos", "carlos@gmail.com", "40028922", "1234");
 
