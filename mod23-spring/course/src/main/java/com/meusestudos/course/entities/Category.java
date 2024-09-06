@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Data
