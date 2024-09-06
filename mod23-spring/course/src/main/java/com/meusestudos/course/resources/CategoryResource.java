@@ -1,9 +1,7 @@
 package com.meusestudos.course.resources;
 
 import com.meusestudos.course.entities.Category;
-import com.meusestudos.course.entities.User;
 import com.meusestudos.course.services.CategoryService;
-import com.meusestudos.course.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

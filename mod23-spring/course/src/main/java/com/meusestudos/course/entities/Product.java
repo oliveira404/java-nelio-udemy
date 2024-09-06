@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -19,14 +18,13 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@RequiredArgsConstructor
 @Data
+@RequiredArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "tb_category")
-public class Category implements Serializable {
+@Table(name = "tb_product")
+public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,7 +36,16 @@ public class Category implements Serializable {
     @NonNull
     private String name;
 
+    @NonNull
+    private String description;
+
+    @NonNull
+    private Double price;
+
+    @NonNull
+    private String imgUrl;
+
     @Setter(AccessLevel.NONE)
     @Transient
-    private Set<Product> products = new HashSet<>();
+    private Set<Category> categories = new HashSet<>();
 }
