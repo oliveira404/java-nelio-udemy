@@ -29,4 +29,17 @@ public class UserService {
     public void delete(Long userId) {
         userRepository.deleteById(userId);
     }
+
+    public User update(Long userId, User user) {
+        // met0d0 mais eficiênte do que usar o getById
+        User entity = userRepository.getReferenceById(userId);
+        updateData(entity, user);
+        return userRepository.save(entity);
+    }
+
+    private void updateData(User entity, User user) {
+        entity.setName(user.getName());
+        entity.setEmail(user.getEmail());
+        entity.setPhone(user.getPhone());
+    }
 }
