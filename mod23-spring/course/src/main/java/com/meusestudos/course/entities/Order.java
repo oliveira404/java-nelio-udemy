@@ -64,14 +64,24 @@ public class Order implements Serializable {
         }
     }
 
+    public Double getTotal() {
+        double sum = 0.0;
+        for (OrderItem x : this.items) {
+            sum = sum + x.getSubTotal();
+        }
+        return sum;
+    }
+
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "id.order")
     private Set<OrderItem> items = new HashSet<>();
+    
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
 
     /*public Set<OrderItem> getItems() {
         return items;
     }*/
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-    private Payment payment;
+
 }
