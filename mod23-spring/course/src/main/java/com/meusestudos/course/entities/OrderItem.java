@@ -6,6 +6,7 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
@@ -27,9 +28,11 @@ public class OrderItem implements Serializable {
     private OrderItemPk id = new OrderItemPk();
 
     //@NonNull
+    @Getter
     private Integer quantity;
 
     //@NonNull
+    @Getter
     private Double price;
 
     public OrderItem(Order order, Product product, Integer quantity, Double price) {
@@ -48,6 +51,7 @@ public class OrderItem implements Serializable {
         this.id.setOrder(order);
     }
 
+    //@JsonIgnore
     public Product getProduct() {
         return this.id.getProduct();
     }
