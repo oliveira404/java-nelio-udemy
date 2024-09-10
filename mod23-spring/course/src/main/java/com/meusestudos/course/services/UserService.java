@@ -39,6 +39,7 @@ public class UserService {
     }
 
     public User update(Long userId, User user) {
+        findById(userId);
         // met0d0 mais eficiênte do que usar o getById
         User entity = userRepository.getReferenceById(userId);
         updateData(entity, user);
