@@ -38,6 +38,19 @@ public class UserService implements Serializable {
         userRepository.deleteById(userId);
     }
 
+    public User update(UserRequest userRequest, String userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (!user.isPresent()) throw new ObjectNotFoundException(String.format("Não existe um cadastro de user com id: %s", userId));
+        User userConvertido = updateData(user.get(), userRequest);
+        return userRepository.save(userConvertido);
+    }
+
+    private User updateData(User user, UserRequest userRequest) {
+        user.setName(userRequest.getName());
+        user.setEmail(userRequest.getEmail());
+        return user;
+    }
+
     public User fromDTO(UserRequest userRequest) {
         return new User(userRequest.getName(), userRequest.getEmail());
     }
