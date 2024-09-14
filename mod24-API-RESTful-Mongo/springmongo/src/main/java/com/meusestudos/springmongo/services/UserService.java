@@ -33,6 +33,11 @@ public class UserService implements Serializable {
         return userRepository.insert(user);
     }
 
+    public void delete(String userId) {
+        findById(userId);
+        userRepository.deleteById(userId);
+    }
+
     public User fromDTO(UserRequest userRequest) {
         return new User(userRequest.getName(), userRequest.getEmail());
     }
