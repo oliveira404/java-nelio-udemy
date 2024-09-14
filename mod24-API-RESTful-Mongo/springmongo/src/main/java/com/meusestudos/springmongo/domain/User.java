@@ -30,4 +30,9 @@ public class User implements Serializable {
     @Getter
     @Setter
     private String email;
+
+    public User(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
 }
