@@ -2,6 +2,7 @@ package com.meusestudos.springmongo.services;
 
 import com.meusestudos.springmongo.domain.User;
 import com.meusestudos.springmongo.repository.UserRepository;
+import com.meusestudos.springmongo.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.Serializable;
@@ -22,7 +23,7 @@ public class UserService implements Serializable {
 
     public User findById(String userId) {
         Optional<User> user = userRepository.findById(userId);
-        if (!user.isPresent()) throw new RuntimeException("nao existe um cadastro com esse id" + userId);
+        if (!user.isPresent()) throw new ObjectNotFoundException(String.format("Não existe um cadastro de user com id: %s", userId));
         return user.get();
     }
 }
