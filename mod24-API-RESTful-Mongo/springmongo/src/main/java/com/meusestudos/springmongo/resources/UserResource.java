@@ -1,5 +1,6 @@
 package com.meusestudos.springmongo.resources;
 
+import com.meusestudos.springmongo.DTO.UserDTO;
 import com.meusestudos.springmongo.domain.User;
 import com.meusestudos.springmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,9 @@ public class UserResource {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll(/*@PathVariable Long userId*/) {
-        return ResponseEntity.ok(userService.findAll());
+    public ResponseEntity<List<UserDTO>> findAll(/*@PathVariable Long userId*/) {
+        List<User> userList = userService.findAll();
+        List<UserDTO> userDTOList = userList.stream().map(x -> new UserDTO(x)).toList();
+        return ResponseEntity.ok(userDTOList);
     }
 }
