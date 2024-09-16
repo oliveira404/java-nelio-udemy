@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
-@Document(collation = "post")
+@Document("post")
 public class Post implements Serializable {
 
     private static final long serialVersionUID = 1L;
