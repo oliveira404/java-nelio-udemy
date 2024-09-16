@@ -1,6 +1,5 @@
 package com.meusestudos.springmongo.services;
 
-import com.meusestudos.springmongo.DTO.UserDTO;
 import com.meusestudos.springmongo.domain.User;
 import com.meusestudos.springmongo.repository.UserRepository;
 import com.meusestudos.springmongo.request.UserRequest;
