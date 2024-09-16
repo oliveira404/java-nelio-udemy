@@ -3,10 +3,8 @@ package com.meusestudos.springmongo.domain;
 import com.meusestudos.springmongo.DTO.AuthorDTO;
 import com.meusestudos.springmongo.DTO.CommentDTO;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -15,7 +13,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
