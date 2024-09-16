@@ -1,6 +1,7 @@
 package com.meusestudos.springmongo.resources;
 
 import com.meusestudos.springmongo.DTO.UserDTO;
+import com.meusestudos.springmongo.domain.Post;
 import com.meusestudos.springmongo.domain.User;
 import com.meusestudos.springmongo.request.UserRequest;
 import com.meusestudos.springmongo.services.UserService;
@@ -57,5 +58,11 @@ public class UserResource {
     public ResponseEntity<UserDTO> update(@RequestBody UserRequest userRequest, @PathVariable String userId) {
         User user = userService.update(userRequest, userId);
         return ResponseEntity.ok(new UserDTO(user));
+    }
+
+    @GetMapping("/{userId}/posts")
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String userId) {
+        User user = userService.findById(userId);
+        return ResponseEntity.ok(user.getPosts());
     }
 }
